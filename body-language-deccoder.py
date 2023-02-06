@@ -15,12 +15,12 @@ joins_connections=mp_drawing.DrawingSpec(color=(119,88,19),thickness=2,circle_ra
 
 #openning and setting the webcam 
 cap=cv2.VideoCapture(0)
-cap.set(3,640) #setting the width of the frame
-cap.set(4,480) #setting the height of the frame
+cap.set(3,800) #setting the width of the frame
+cap.set(4,700) #setting the height of the frame
 cap.set(10,100) #setting the brightnesse of the frame
 
 #initiate the mode of logistic regression
-with open('D:/Project/body language decoder/body_language.pkl', 'rb') as f:
+with open('D:/Project/AI/ML/body-language-decoder/body_language.pkl', 'rb') as f:
     model = pickle.load(f)
 
 #initiate holistic mediapipe
@@ -62,7 +62,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.6,min_tracking_confidence=0
                         , [640,480]).astype(int))
             
             cv2.rectangle(image, 
-                          (coords[0], coords[1]+5), 
+                          (coords[0], coords[1]+20), 
                           (coords[0]+len(body_language_class)*20, coords[1]-30), 
                           (245, 117, 16), -1)
             cv2.putText(image, body_language_class, coords, 
@@ -86,15 +86,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.6,min_tracking_confidence=0
             pass
         
 
-        #Drawing face landmark
-        mp_drawing.draw_landmarks(image,result.face_landmarks,mp_holistic.FACEMESH_TESSELATION,head,head)
-        #Drawing pose landmark
-        mp_drawing.draw_landmarks(image,result.pose_landmarks,mp_holistic.POSE_CONNECTIONS,body,joins_connections)
-        #Drawing right hand landmark
-        mp_drawing.draw_landmarks(image,result.right_hand_landmarks,mp_holistic.HAND_CONNECTIONS,hand,joins_connections)
-        #Drawing left hand landmark
-        mp_drawing.draw_landmarks(image,result.left_hand_landmarks,mp_holistic.HAND_CONNECTIONS,hand,joins_connections)
-
+        
         cv2.imshow('WebCam',image) #stream the frame thought a window
         c = cv2.waitKey(1)
         if c == 27:#exit fucntion exit using esc
